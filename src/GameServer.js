@@ -5,19 +5,19 @@ var fs = require('fs');
 var ini = require('./modules/ini.js');
 
 // Project imports
-var Packet = require('./packet');
+var Packet = require('./packet');           // 定义了服务器与客户端通信时如何解析数据的结构
 var PlayerTracker = require('./PlayerTracker');
 var PacketHandler = require('./PacketHandler');
-var Entity = require('./entity');
-var Gamemode = require('./gamemodes');
-var BotLoader = require('./ai/BotLoader');
-var Logger = require('./modules/log');
+var Entity = require('./entity');           // Cell基类, PlayerCell等都继承自Cell基类
+var Gamemode = require('./gamemodes');      //
+var BotLoader = require('./ai/BotLoader');  // 自动机器人
+var Logger = require('./modules/log');      // 日志系统
 var CollisionHandler = require('./CollisionHandler');
 var NodeHandler = require('./NodeHandler');
 var PlayerHandler = require('./PlayerHandler');
-var Vector = require('./modules/Vector');
-var Rectangle = require('./modules/Rectangle');
-var QuadTree = require('./modules/QuadTree');
+var Vector = require('./modules/Vector');        // 向量
+var Rectangle = require('./modules/Rectangle');  // 长方形, 用于计算用户当前屏幕内都有哪些对象
+var QuadTree = require('./modules/QuadTree');    // 四叉树
 
 // GameServer implementation
 function GameServer() {
@@ -40,10 +40,10 @@ function GameServer() {
     // Nodes
     this.lastNodeId = 1;
     this.nodes = [];
-    this.nonPlayerNodes = []; // All nodes except player nodes
-    this.nodesVirus = []; // Virus nodes
-    this.nodesFood = []; // Food nodes (only that are spawned by server)
-    this.nodesEjected = []; // Ejected mass nodes
+    this.nonPlayerNodes = []; // Player之外的所有细胞
+    this.nodesVirus = []; // 癌细胞
+    this.nodesFood = []; // 食物细胞, 只能通过服务器生成
+    this.nodesEjected = []; // 发射的大细胞
     this.nodesPlayer = []; // Nodes controlled by players
 
     this.leaderboard = [];

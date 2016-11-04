@@ -273,6 +273,11 @@ NodeHandler.prototype.canEjectMass = function(client) {
     } else return false;
 };
 
+/**
+ * 按W键 向外喷射大质量子弹
+ *
+ * @param client
+ */
 NodeHandler.prototype.ejectMass = function(client) {
     if (!this.canEjectMass(client)) return;
 

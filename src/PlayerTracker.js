@@ -3,10 +3,10 @@ var Vector = require('./modules/Vector');
 var Rectangle = require('./modules/Rectangle');
 
 function PlayerTracker(gameServer, socket) {
-    this.pID = -1;
-    this.disconnect = -1; // Disconnection
-    this.fullyDisconnected = false;
-    this.name = "";
+    this.pID = -1; // 用于标记分数榜自己标红
+    this.disconnect = -1; // Disconnection 掉线
+    this.fullyDisconnected = false; // 测地断线
+    this.name = ""; // 显示的名字
     this.gameServer = gameServer;
     this.socket = socket;
 
