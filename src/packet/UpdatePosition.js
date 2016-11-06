@@ -15,5 +15,7 @@ UpdatePosition.prototype.build = function() {
     view.setFloat32(5, this.y, true);
     view.setFloat32(9, this.size, true);
 
+    console.log("UpdatePosition Funtion Pushed [56]", this);
+
     return buf;
 };

@@ -2,8 +2,18 @@ var Entity = require('./entity');
 var Vector = require('./modules/Vector');
 
 function NodeHandler(gameServer, collisionHandler) {
+    /**
+     * 存储的是在PlayerHandler中通过addClient方法加入的client.playerTracker
+     * @type {Array}
+     */
     this.toUpdate = [];
+
+    /**
+     * 除了PlayerCell之外的其他细胞
+     * @type {Array}
+     */
     this.toUpdateNodes = [];
+
     this.gameServer = gameServer;
     this.collisionHandler = collisionHandler;
 }
@@ -14,18 +24,17 @@ NodeHandler.prototype.update = function() {
     // Start recording time needed to update nodes
     var time = new Date();
 
-    // Spawning food & viruses
+    // 根据被吃掉的食物和癌细胞数量, 服务器随机生成新的食物, Spawning food & viruses
     var foodSpawn = Math.min(this.gameServer.config.foodMaxAmount - this.gameServer.nodesFood.length,
         this.gameServer.config.foodSpawnAmount);
     this.addFood(foodSpawn);
-
     var virusSpawn = this.gameServer.config.virusMinAmount - this.gameServer.nodesVirus.length;
     this.addViruses(virusSpawn);
 
-    // Preset mass decay
+    // 当前质量衰减, Preset mass decay
     var massDecay = 1 - (this.gameServer.config.playerMassDecayRate * this.gameServer.gameMode.decayMod / 40);
 
-    // First update client's cells
+    // 循环更新所有玩家的细胞
     while (this.toUpdate.length > 0) {
         var client = this.toUpdate[0];
         this.toUpdate.shift();
@@ -37,9 +46,12 @@ NodeHandler.prototype.update = function() {
             client.mergeOverride = false;
 
         // Add cells and sort them
+        // slice(start,end) 选取子数组, end默认为结尾, 返回的新数组不影响原数组
+        // sorted 就是当前循环到的客户端的细胞数组
         var sorted = client.cells.slice(0);
+        // sort 默认是从小到大排序, 回调函数中, 返回>0表示a>b
         sorted.sort(function(a, b) {
-            return b.mass - a.mass;
+            return b.mass - a.mass; // b - a 表示从大到小排序
         });
 
         // Precalculate decay multiplier
@@ -63,17 +75,18 @@ NodeHandler.prototype.update = function() {
             cell.moveEngineTick();
             this.gameServer.gameMode.onCellMove(cell, this.gameServer);
 
-            // Collide if required
+            // Collide if required, 本段是计算自己分裂出的多个圆是否存在位置过近相交情况, 有的话救弹开
             for (var k = 0; k < sorted.length; k++) {
                 if (!sorted[k]) continue;
 
+                // collisionRestoreTicks 判断是否在碰撞检测时间范围内, >0表示不在碰撞检测时间内
                 if ((sorted[k].collisionRestoreTicks > 0 || cell.collisionRestoreTicks > 0) ||
                     (sorted[k].shouldRecombine && cell.shouldRecombine)) continue;
 
                 this.collisionHandler.pushApart(cell, sorted[k]);
             }
 
-            // Collision restoring
+            // Collision restoring, 倒计时自己的分裂出去的细胞合并的时间
             if (cell.collisionRestoreTicks > 0) cell.collisionRestoreTicks -= 0.5;
 
             // Eating
@@ -121,6 +134,11 @@ NodeHandler.prototype.update = function() {
     this.gameServer.ticksNodeUpdate = new Date() - time;
 };
 
+/**
+ * 在地图中增加指定数量的食物
+ *
+ * @param {Number} n
+ */
 NodeHandler.prototype.addFood = function(n) {
     if (n <= 0) return;
     for (var i = 0; i < n; i++) {
@@ -139,6 +157,11 @@ NodeHandler.prototype.addFood = function(n) {
     }
 };
 
+/**
+ * 向地图中增加癌细胞
+ *
+ * @param {Number} n
+ */
 NodeHandler.prototype.addViruses = function(n) {
     if (n <= 0) return;
     for (var i = 0; i < n; i++) {
@@ -154,6 +177,11 @@ NodeHandler.prototype.addViruses = function(n) {
     }
 };
 
+/**
+ * 随机一个位置
+ *
+ * @returns {Vector}
+ */
 NodeHandler.prototype.getRandomPosition = function() {
     var xSum = this.gameServer.config.borderRight - this.gameServer.config.borderLeft;
     var ySum = this.gameServer.config.borderBottom - this.gameServer.config.borderTop;
@@ -172,7 +200,7 @@ NodeHandler.prototype.getRandomSpawn = function() {
             var node = this.gameServer.nodesFood[randomIndex];
             if (!node) continue;
             if (node.eaten) continue;
-    
+
             pellet = node;
             break;
         }
@@ -192,10 +220,15 @@ NodeHandler.prototype.getRandomSpawn = function() {
     );
 };
 
+/**
+ * 按W键向癌细胞开火
+ *
+ * @param {Virus} parent
+ */
 NodeHandler.prototype.shootVirus = function(parent) {
     var parentPos = {
         x: parent.position.x,
-        y: parent.position.y,
+        y: parent.position.y
     };
 
     var newVirus = new Entity.Virus(
@@ -215,6 +248,11 @@ NodeHandler.prototype.shootVirus = function(parent) {
     this.gameServer.addNode(newVirus);
 };
 
+/**
+ * 按空格键进行细胞分裂
+ *
+ * @param {PlayerTracker} client
+ */
 NodeHandler.prototype.splitCells = function(client) {
     var len = client.cells.length;
     var splitCells = 0; // How many cells have been split
@@ -266,6 +304,11 @@ NodeHandler.prototype.createPlayerCell = function(client, parent, angle, mass) {
     return true;
 };
 
+/**
+ * 根据CD时间判断是否满足按W键向外弹射的条件
+ * @param client
+ * @returns {boolean}
+ */
 NodeHandler.prototype.canEjectMass = function(client) {
     if (this.gameServer.time - client.lastEject >= this.gameServer.config.ejectMassCooldown) {
         client.lastEject = this.gameServer.time;

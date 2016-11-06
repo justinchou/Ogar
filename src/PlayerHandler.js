@@ -23,12 +23,12 @@ PlayerHandler.prototype.update = function() {
         if (!client) continue;
         if (client.fullyDisconnected) continue;
 
-        // Update client
+        // Update client 对Client中缓存的数据进行执行
         client.update();
         client.antiTeamTick();
 
         // 此处将客户端链接从数组内弹出, 然后定时40ms之后, 重新加入该数组 Todo: 此处要检验是否所有的链接在40ms之内都会处理完, 如果上一个循环无法处理完毕, 此处设定为40ms将会有bug
-        this.toUpdate.shift();
+        this.toUpdate.shift(); // Todo 将本语句放到 var client = this.toUpdate[0]; 和 if (!client) continue; 之间可以解除前面所涉及的 当!client为真情况下的死循环
         // Continue bind
         setTimeout(function() {
             // 如果是已经断开链接的, 就不再加入, 说明: 此处的this是bind时传入的client, 需要略微注意
@@ -41,6 +41,11 @@ PlayerHandler.prototype.update = function() {
     this.gameServer.ticksMapUpdate = new Date() - time;
 };
 
+/**
+ * 在客户端连接的时候调用, 传入ws(client)
+ *
+ * @param {WebSocket.Client} client
+ */
 PlayerHandler.prototype.addClient = function(client) {
     this.toUpdate.push(client.playerTracker);
     this.gameServer.nodeHandler.toUpdate.push(client.playerTracker);

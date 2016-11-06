@@ -10,5 +10,7 @@ ClearNodes.prototype.build = function() {
 
     view.setUint8(0, this.protocolVersion == 5 ? 20 : 18);
 
+    console.log("ClearNode Funtion Pushed [51]");
+
     return buf;
 };

@@ -3,10 +3,10 @@ var Vector = require('./modules/Vector');
 var Rectangle = require('./modules/Rectangle');
 
 function PlayerTracker(gameServer, socket) {
-    this.pID = -1; // 用于标记分数榜自己标红
-    this.disconnect = -1; // Disconnection 掉线
-    this.fullyDisconnected = false; // 测地断线
-    this.name = ""; // 显示的名字
+    this.pID = -1;                  // 用于标记分数榜自己标红
+    this.disconnect = -1;           // Disconnection 掉线
+    this.fullyDisconnected = false; // 彻底断线
+    this.name = "";                 // 显示的名字
     this.gameServer = gameServer;
     this.socket = socket;
 
@@ -16,14 +16,14 @@ function PlayerTracker(gameServer, socket) {
 
     this.cells = [];
     this.mergeOverride = false; // Triggered by console command
-    this.score = 0; // Needed for leaderboard
+    this.score = 0;             // 当前分数, 用于排行榜显示
 
-    this.mouse = new Vector(0, 0);
-    this.centerPos = new Vector(0, 0);
-    this.lastEject = new Date();
-    this.tickLeaderboard = 0;
-    this.tickViewBox = 0;
-    this.viewScale = 1;
+    this.mouse = new Vector(0, 0);      // 鼠标的位置
+    this.centerPos = new Vector(0, 0);  // 所有分裂出去的细胞 计算一个中心位置
+    this.lastEject = new Date();        // Eject Mass 时间
+    this.tickLeaderboard = 0;           // 更新排行榜时间
+    this.tickViewBox = 0;               // 更新当前视窗时间
+    this.viewScale = 1;                 // 当前窗口缩放比例, 越大越缩放
 
     this.team = 0;
     this.spectate = false;

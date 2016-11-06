@@ -45,6 +45,10 @@ Cell.prototype.getColor = function() {
     return this.color;
 };
 
+/**
+ * 根据圆质量判断圆半径
+ * @returns {number}
+ */
 Cell.prototype.getSize = function() {
     // Calculates radius based on cell mass
     return Math.ceil(Math.sqrt(100 * this.mass));

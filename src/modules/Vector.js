@@ -134,6 +134,12 @@ Vector.prototype.flipX = function() {
     return this.scale(-1, 1);
 };
 
+/**
+ * atan2 返回从 x 轴到点 (x,y) 之间的角度
+ *
+ * -PI 到 PI 之间的值，是从 X 轴正向逆时针旋转到点 (x,y) 时经过的角度。
+ * @returns {number}
+ */
 Vector.prototype.angle = function() {
     return Math.atan2(this.x, this.y);
 };

@@ -102,5 +102,8 @@ DynamicBuffer.prototype.build = function() {
     for (var i = 0; i < this.bytes.length; i++) {
         view.setUint8(i, this.bytes[i], false);
     }
+
+    // console.log("DynamicBuffer Funtion Pushed [49]");
+
     return buf;
 };

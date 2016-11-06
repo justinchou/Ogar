@@ -17,5 +17,7 @@ SetBorder.prototype.build = function() {
     view.setFloat64(17, this.right, true);
     view.setFloat64(25, this.bottom, true);
 
+    // console.log("SetBorder Funtion Pushed [53]");
+
     return buf;
 };

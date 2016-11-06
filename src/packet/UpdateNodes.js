@@ -93,5 +93,7 @@ UpdateNodes.prototype.build = function() {
         buffer.setUint32(this.nonVisibleNodes[i].nodeId ^ this.scrambleID);     // Removing node's ID
     }
 
+    //console.log("UpdateNodes Funtion Pushed [55]");
+
     return buffer.build();
 };

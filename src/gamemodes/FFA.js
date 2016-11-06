@@ -87,3 +87,12 @@ FFA.prototype.updateLB = function(gameServer) {
 
     this.rankOne = lb[0];
 }
+
+FFA.prototype.leaderboardAddSort = function (player, lb) {
+    for (var i = lb.length-1; i>=0; i--) {
+        if (player.getScore(true) < lb[i].getScore(true)) {
+            lb.splice(i+1, 0, player);
+            break;
+        }
+    }
+};

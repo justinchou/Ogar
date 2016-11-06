@@ -12,6 +12,6 @@ AddNode.prototype.build = function() {
 
     view.setUint8(0, 32, true);
     view.setUint32(1, this.item.nodeId ^ this.scrambleID, true);
-
+console.log("AddNode Funtion Pushed [50]");
     return buf;
 };

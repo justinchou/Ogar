@@ -13,5 +13,7 @@ DrawLine.prototype.build = function() {
     view.setUint16(1, this.x, true);
     view.setUint16(3, this.y, true);
 
+    // console.log("DrawLine Funtion Pushed [52]");
+
     return buf;
 };
