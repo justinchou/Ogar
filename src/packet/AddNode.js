@@ -12,6 +12,14 @@ AddNode.prototype.build = function() {
 
     view.setUint8(0, 32, true);
     view.setUint32(1, this.item.nodeId ^ this.scrambleID, true);
-console.log("AddNode Funtion Pushed [50]");
+
+    // console.log("AddNode Funtion Pushed [50]");
+
     return buf;
 };
+
+// Buffer = [packetId * 1, nodeId * 4]
+// function Buf() {
+//   packetId: char
+//   nodeId: uInt32
+// }

@@ -46,7 +46,7 @@ UpdateNodes.prototype.build = function() {
         var flags = 0;
         var colors = [node.color.r, node.color.g, node.color.b];
 
-        if (this.scrambleColor.from != -1 && this.scrambleColor.to != -1 && (node.cellType == 0 || node.cellType == 3)) {
+        if (this.scrambleColor.from != -1 && this.scrambleColor.to != -1 && (node.cellType == 0 || node.cellType == 3)) {   // PlayerCell == 0, Ejected Mass == 3
             var from = colors[this.scrambleColor.from],
                 to = colors[this.scrambleColor.to];
             colors[this.scrambleColor.from] = to;
@@ -97,3 +97,31 @@ UpdateNodes.prototype.build = function() {
 
     return buffer.build();
 };
+
+// Buffer = [
+// packetId*1,
+// deadCell.Length*2, [{eatenId * 4, eaterId *4}...],
+// [{nodeId*4, x*4,y*4,size*2, flag*1,color*3, name*n,splitter*1}], splitter*1  ==> 地图上所有细胞ID, 位置, 大小, 颜色, 所属人名字
+// nonVisibleNodes.Length * 2, [nonVisibleNodeId]
+// ]
+// function Buf() {
+//   packetId: char
+//   deadCellLen: uInt16
+//   deadCells: []
+//   allCells: []
+//   nonVisibleNodesLen: uInt16,
+//   nonVisibleNodes: []
+// }
+// function DeadCell {
+//   eaterId: uInt32
+//   eatenId: uInt32
+// }
+// function Cell {
+//   nodeId: uInt32
+//   x: uInt32
+//   y: uInt32
+//   size: uInt16
+//   flags: uInt8
+//   color: Vector3
+//   name: string
+// }

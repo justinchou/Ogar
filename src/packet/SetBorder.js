@@ -21,3 +21,12 @@ SetBorder.prototype.build = function() {
 
     return buf;
 };
+
+// Buffer = [packetId * 1, left * 4, top * 4, right * 4, bottom * 4];
+// function Buf() {
+//   packetId: char
+//   left: uInt32
+//   top: uInt32
+//   right: uInt32
+//   bottom: uInt32
+// }

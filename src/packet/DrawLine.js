@@ -17,3 +17,10 @@ DrawLine.prototype.build = function() {
 
     return buf;
 };
+
+// Buffer = [packetId * 1, x * 2, y * 2]
+// function Buf() {
+//   packetId: char
+//   x: uInt16
+//   y: uInt16
+// }
