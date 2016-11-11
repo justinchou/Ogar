@@ -34,7 +34,7 @@ NodeHandler.prototype.update = function() {
     // 当前质量衰减, Preset mass decay
     var massDecay = 1 - (this.gameServer.config.playerMassDecayRate * this.gameServer.gameMode.decayMod / 40);
 
-    // 循环更新所有玩家的细胞
+    // 循环playerTracker 更新每个玩家的所有细胞:
     while (this.toUpdate.length > 0) {
         var client = this.toUpdate[0];
         this.toUpdate.shift();
@@ -192,7 +192,7 @@ NodeHandler.prototype.getRandomPosition = function() {
 };
 
 NodeHandler.prototype.getRandomSpawn = function() {
-    // Find a random pellet
+    // Find a random pellet 寻找一个随机小球
     var pellet;
     if (this.gameServer.nodesFood.length > 0) {
         while (true) {

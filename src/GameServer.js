@@ -308,7 +308,7 @@ GameServer.prototype.addNode = function(node) {
     if (node.cellType != 0) this.nonPlayerNodes.push(node);
 
     // Adds to the owning player's screen excluding ejected cells
-    if (node.owner && node.cellType != 3) {
+    if (node.owner && node.cellType != 3) { // 不是按W向外喷射子弹
         node.setColor(node.owner.color);
         node.owner.cells.push(node);
         node.owner.socket.sendPacket(new Packet.AddNode(node, node.owner.scrambleID));
@@ -413,6 +413,12 @@ GameServer.prototype.mainLoop = function() {
     }
 };
 
+/**
+ *
+ * @param {PlayerTracker} player
+ * @param {Vector} pos
+ * @param {Number} mass
+ */
 GameServer.prototype.spawnPlayer = function(player, pos, mass) {
     if (mass == null) { // Get starting mass
         mass = this.config.playerStartMass;
