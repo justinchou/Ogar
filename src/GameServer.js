@@ -25,6 +25,9 @@ function GameServer() {
     this.run = true;
 
     this.lastPlayerId = 1;
+    /**
+     * @type Array{ws}
+     */
     this.clients = [];
 
     // Handlers
@@ -39,12 +42,16 @@ function GameServer() {
 
     // Nodes
     this.lastNodeId = 1;
-    this.nodes = [];          // 所有细胞
+
+    /**
+     * @type Array{Cell}
+     */
+    this.nodes          = []; // 所有细胞
     this.nonPlayerNodes = []; // Player之外的所有细胞
-    this.nodesPlayer = [];    // 玩家细胞
-    this.nodesVirus = [];     // 癌细胞
-    this.nodesFood = [];      // 食物细胞, 只能通过服务器生成
-    this.nodesEjected = [];   // 发射的大细胞
+    this.nodesPlayer    = []; // 玩家细胞
+    this.nodesVirus     = []; // 癌细胞
+    this.nodesFood      = []; // 食物细胞, 只能通过服务器生成
+    this.nodesEjected   = []; // 发射的大细胞
 
     this.leaderboard = [];
     this.largestClient; // Required for spectators
@@ -308,7 +315,7 @@ GameServer.prototype.addNode = function(node) {
     if (node.cellType != 0) this.nonPlayerNodes.push(node);
 
     // Adds to the owning player's screen excluding ejected cells
-    if (node.owner && node.cellType != 3) {
+    if (node.owner && node.cellType != 3) { // 不是按W向外喷射子弹(变成非自己的分子,没有名字不能移动), 而是细胞平均分裂成两个, 与大部队一起移动, 有自己的名字在上面
         node.setColor(node.owner.color);
         node.owner.cells.push(node);
         node.owner.socket.sendPacket(new Packet.AddNode(node, node.owner.scrambleID));
@@ -413,6 +420,12 @@ GameServer.prototype.mainLoop = function() {
     }
 };
 
+/**
+ *
+ * @param {PlayerTracker} player
+ * @param {Vector} pos
+ * @param {Number} mass
+ */
 GameServer.prototype.spawnPlayer = function(player, pos, mass) {
     if (mass == null) { // Get starting mass
         mass = this.config.playerStartMass;
