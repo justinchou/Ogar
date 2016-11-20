@@ -39,12 +39,12 @@ function GameServer() {
 
     // Nodes
     this.lastNodeId = 1;
-    this.nodes = [];
+    this.nodes = [];          // 所有细胞
     this.nonPlayerNodes = []; // Player之外的所有细胞
-    this.nodesVirus = []; // 癌细胞
-    this.nodesFood = []; // 食物细胞, 只能通过服务器生成
-    this.nodesEjected = []; // 发射的大细胞
-    this.nodesPlayer = []; // Nodes controlled by players
+    this.nodesPlayer = [];    // 玩家细胞
+    this.nodesVirus = [];     // 癌细胞
+    this.nodesFood = [];      // 食物细胞, 只能通过服务器生成
+    this.nodesEjected = [];   // 发射的大细胞
 
     this.leaderboard = [];
     this.largestClient; // Required for spectators
