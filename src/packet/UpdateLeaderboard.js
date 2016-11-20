@@ -66,3 +66,5 @@ UpdateLeaderboard.prototype.build = function() {
 
     return buffer.build();
 };
+
+// Buffer = [packetId * 1 == packetLB * 1, length * 4, ... other leader board data]

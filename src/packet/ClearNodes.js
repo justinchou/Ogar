@@ -14,3 +14,8 @@ ClearNodes.prototype.build = function() {
 
     return buf;
 };
+
+// Buffer = [packetId * 1]
+// function Buf() {
+//   packetId: char
+// }

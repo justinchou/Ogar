@@ -19,3 +19,11 @@ UpdatePosition.prototype.build = function() {
 
     return buf;
 };
+
+// Buffer = [packetId * 1, x * 4, y * 4, size * 4]
+// function Buf() {
+//   packetId: {Number}
+//   x: {Number}
+//   y: {Number}
+//   size: {Number}
+// }

@@ -34,7 +34,7 @@ NodeHandler.prototype.update = function() {
     // 当前质量衰减, Preset mass decay
     var massDecay = 1 - (this.gameServer.config.playerMassDecayRate * this.gameServer.gameMode.decayMod / 40);
 
-    // 循环更新所有玩家的细胞
+    // 循环playerTracker 更新每个玩家的所有细胞:
     while (this.toUpdate.length > 0) {
         var client = this.toUpdate[0];
         this.toUpdate.shift();
@@ -192,7 +192,7 @@ NodeHandler.prototype.getRandomPosition = function() {
 };
 
 NodeHandler.prototype.getRandomSpawn = function() {
-    // Find a random pellet
+    // Find a random pellet 寻找一个随机小球
     var pellet;
     if (this.gameServer.nodesFood.length > 0) {
         while (true) {
@@ -255,6 +255,7 @@ NodeHandler.prototype.shootVirus = function(parent) {
  */
 NodeHandler.prototype.splitCells = function(client) {
     var len = client.cells.length;
+    // 按照条件计算可以分裂的细胞数目
     var splitCells = 0; // How many cells have been split
     for (var i = 0; i < len; i++) {
         var cell = client.cells[i];
@@ -262,6 +263,7 @@ NodeHandler.prototype.splitCells = function(client) {
         var angle = cell.position.angleTo(client.mouse.x, client.mouse.y);
         if (angle == 0 || isNaN(angle)) angle = Math.PI / 2;
 
+        // 细胞分裂成功, 计数器+=1
         if (this.createPlayerCell(client, cell, angle, cell.mass / 2) == true) splitCells++;
     }
     if (splitCells > 0) client.applyTeaming(1, 2); // Account anti-teaming
@@ -270,13 +272,13 @@ NodeHandler.prototype.splitCells = function(client) {
 NodeHandler.prototype.createPlayerCell = function(client, parent, angle, mass) {
     // Returns boolean whether a cell has been split or not. You can use this in the future.
 
-    // Maximum controllable cells
+    // Maximum controllable cells, 超过最大自细胞数限制
     if (client.cells.length >= this.gameServer.config.playerMaxCells) return false;
 
-    // Minimum mass to split
+    // Minimum mass to split, 质量太小不能分裂
     if (parent.mass < this.gameServer.config.playerMinMassSplit) return false;
 
-    // Create cell
+    // Create cell, 创建一个用户细胞
     var newCell = new Entity.PlayerCell(
         this.gameServer.getNextNodeId(),
         client,
@@ -293,7 +295,7 @@ NodeHandler.prototype.createPlayerCell = function(client, parent, angle, mass) {
         Math.cos(angle) * splitSpeed
     );
 
-    // Cells won't collide immediately
+    // Cells won't collide immediately, 设置分裂后细胞不马上进行碰撞计算的初始化时间
     newCell.collisionRestoreTicks = 12;
     parent.collisionRestoreTicks = 12;
 

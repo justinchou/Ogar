@@ -4,7 +4,8 @@ function PlayerHandler(gameServer) {
      *
      * 链接的时候通过GameServer.start() -> connectionEstablished(ws) -> addClient(ws)
      *
-     * 与 GameServer.clients 区别在于, 本数组是循环清空, 然后用定时器重新加入的
+     * ---------- 与 GameServer.clients 区别在于, 本数组是循环清空, 然后用定时器重新加入的 ------------ 此处注释错误, 更新于2016-11-7 20:55:52.
+     * GameServer.clients 存储的是WebSocket链接, 但是toUpdate存储的是PlayerTracker
      *
      * @type {Array}
      */

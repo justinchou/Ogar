@@ -1,5 +1,5 @@
 module.exports = {
-    AddNode: require('./AddNode'),          // 23
+    AddNode: require('./AddNode'),          // 23  When Eat Virus Cell Split, Press Space Button, Server Generate Food, Press W Shoot
     ClearNodes: require('./ClearNodes'),    // 4
     UpdatePosition: require('./UpdatePosition'), // 3 在ClearNode之后
     SetBorder: require('./SetBorder'),      // 1777

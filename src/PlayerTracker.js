@@ -284,6 +284,10 @@ PlayerTracker.prototype.applyTeaming = function(n, type) {
 
 // Viewing box
 
+/**
+ * 根据当前细胞的所有位置
+ * @returns {Rectangle}
+ */
 PlayerTracker.prototype.getBox = function() { // For view distance
     if (this.cells.length > 0) {
         var totalSize = this.getSizes();
@@ -302,6 +306,29 @@ PlayerTracker.prototype.getBox = function() { // For view distance
     );
 };
 
+/**
+ * 获取当前模式下, 可见的所有节点(通过调用本类的其他方法达成)
+ * @returns {Array.<T>}
+ */
+PlayerTracker.prototype.viewReset = function() {
+    if (this.spectate) {
+        // Spectate mode
+        return this.getSpectateNodes();
+    }
+
+    // Update center
+    this.updateCenter();
+
+    // Box
+    var box = this.getBox();
+    var newVisible = this.calcVisibleNodes(box);
+
+    return newVisible;
+};
+
+/**
+ * 根据当前细胞的所有位置, 计算出一个中心点
+ */
 PlayerTracker.prototype.updateCenter = function() { // Get center of cells
     var len = this.cells.length;
 
@@ -324,22 +351,25 @@ PlayerTracker.prototype.updateCenter = function() { // Get center of cells
     this.centerPos = new Vector(X / len, Y / len);
 };
 
-PlayerTracker.prototype.viewReset = function() {
-    if (this.spectate) {
-        // Spectate mode
-        return this.getSpectateNodes();
-    }
-
-    // Update center
-    this.updateCenter();
-
-    // Box
-    var box = this.getBox();
-    var newVisible = this.calcVisibleNodes(box);
-
-    return newVisible;
+/**
+ * 使用四叉树计算给定矩形区域内的节点
+ *
+ * @param box
+ */
+PlayerTracker.prototype.calcVisibleNodes = function(box) {
+    return this.gameServer.quadTree.query(box);
 };
 
+
+//////////////// 以下方法是为观察者模式设定的方法 ///////////////////
+
+/**
+ * Get Visible Nodes For Spectate Mode
+ *
+ * 观察者模式下可见的细胞
+ *
+ * @returns {Array.<T>}
+ */
 PlayerTracker.prototype.getSpectateNodes = function() {
     if (!this.freeRoam) {
         var specPlayer = this.gameServer.largestClient;
@@ -358,6 +388,12 @@ PlayerTracker.prototype.getSpectateNodes = function() {
     return this.moveInFreeRoam();
 };
 
+/**
+ * Get Visible Node When Spectator Can Move Mouse
+ *
+ * 观察者模式下用户可以随意移动鼠标来在地图中游走的情况下, 可见的细胞
+ *
+ */
 PlayerTracker.prototype.moveInFreeRoam = function() {
     // Player is in free roam
 
@@ -389,16 +425,20 @@ PlayerTracker.prototype.moveInFreeRoam = function() {
     return newVisible;
 };
 
-PlayerTracker.prototype.calcVisibleNodes = function(box) {
-    return this.gameServer.quadTree.query(box);
-};
-
+/**
+ * 观察者模式下, 视窗的中心区域的设定
+ * @param x
+ * @param y
+ */
 PlayerTracker.prototype.setCenterPos = function(x, y) {
     this.centerPos.x = x;
     this.centerPos.y = y;
     if (this.freeRoam) this.checkBorderPass();
 };
 
+/**
+ * 检查是否超出了边界, 超出了就及时修正
+ */
 PlayerTracker.prototype.checkBorderPass = function() {
     // A check while in free-roam mode to avoid player going into nothingness
     if (this.centerPos.x < this.gameServer.config.borderLeft) this.centerPos.x = this.gameServer.config.borderLeft;
@@ -407,6 +447,10 @@ PlayerTracker.prototype.checkBorderPass = function() {
     if (this.centerPos.y > this.gameServer.config.borderBottom) this.centerPos.y = this.gameServer.config.borderBottom;
 };
 
+/**
+ * 向观察者界面发送当前位置信息
+ * @param specZoom
+ */
 PlayerTracker.prototype.sendPosPacket = function(specZoom) {
     this.socket.sendPacket(new Packet.UpdatePosition(
         this.centerPos.x + this.scrambleX,
@@ -414,6 +458,8 @@ PlayerTracker.prototype.sendPosPacket = function(specZoom) {
         specZoom
     ));
 };
+
+//////////////// 以上方法是为观察者模式设定的方法 ///////////////////
 
 PlayerTracker.prototype.sendCustomPosPacket = function(x, y, specZoom) {
     this.socket.sendPacket(new Packet.UpdatePosition(
