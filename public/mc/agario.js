@@ -8583,8 +8583,10 @@
             window.fillSocialValues(i, "externalGShare")
         }, isAgarioDomain: function () {
             var i = this.getDomain();
-            return i == "agar.io" || i == "staging-web.agar.io" || i == "localhost";
-            return false
+            // return i == "agar.io" || i == "staging-web.agar.io" || i == "localhost";
+            // return false
+            alert(i);
+            return true;
         }, getDomain: function () {
             var q;
             var i = window;

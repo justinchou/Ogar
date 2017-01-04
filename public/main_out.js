@@ -1,24 +1,61 @@
-(function (a, c) {
-    function u(a, e) {
-        if (e) {
+(function (a, $) {
+    // a 是 window, MC 是index.html中定义的 MiniclipAPI
+
+    function setCookie(a, expire) {
+        if (expire) {
             var b = new Date;
-            b.setTime(b.getTime() + 864E5 * e);
+            b.setTime(b.getTime() + 864E5 * expire);    // 864E5 => 86400 * 1000 => 1000 Days
             b = "; expires=" + b.toGMTString()
         } else b = "";
         document.cookie = "agario_redirect=" + a + b + "; path=/"
     }
 
-    function R() {
-        c.get(S + "//gc.agar.io", function (a) {
-            a = a.split(" ");
-            p = a[0];
-            a = a[1] || "";
-            t.hasOwnProperty(p) && ("string" == typeof t[p] ? MC.getRegion() || (MC.setRegion(t[p]), c("#region").val(MC.getRegion())) : t[p].hasOwnProperty(a) && !MC.getRegion() && (MC.setRegion(t[p][a]), c("#region").val(MC.getRegion())));
-            "" != p && (cc.initialise({
-                cookies: {social: {}, analytics: {}, advertising: {}, necessary: {}},
-                settings: {consenttype: "explicit"}
-            }), cc.setLocation(p))
-        }, "text")
+    function setRegion() {
+        // $.get(protocol + "//gc.agar.io", function (data) {
+        //     var arr = data.split(" ");
+        //     var lang1 = arr[0];
+        //     var lang2 = arr[1] || "";
+        //     if (lang.hasOwnProperty(lang1)) {
+        //         if ("string" == typeof lang[lang1]) {
+        //             MC.getRegion() || (MC.setRegion(lang[lang1]), $("#region").val(MC.getRegion()))
+        //         } else {
+        //             lang[lang1].hasOwnProperty(lang2) && !MC.getRegion() && (MC.setRegion(lang[lang1][lang2]), $("#region").val(MC.getRegion()))
+        //         }
+        //     }
+        //     if ("" != lang1) {
+        //         cc.initialise({
+        //             cookies: {social: {}, analytics: {}, advertising: {}, necessary: {}},
+        //             settings: {consenttype: "explicit"}
+        //         });
+        //         cc.setLocation(lang1);
+        //     }
+        // }, "text");
+
+        // var arr = "CN ?".split(" ");
+        // var lang1 = arr[0];
+        // var lang2 = arr[1] || "";
+        // if (lang.hasOwnProperty(lang1)) {
+        //     if ("string" == typeof lang[lang1]) {
+        //         MC.getRegion() || (MC.setRegion(lang[lang1]), $("#region").val(MC.getRegion()));
+        //     } else {
+        //         lang[lang1].hasOwnProperty(lang2) && !MC.getRegion() && (MC.setRegion(lang[lang1][lang2]), $("#region").val(MC.getRegion()))
+        //     }
+        // }
+        // if ("" != lang1) {
+        //     cc.initialise({
+        //         cookies: {social: {}, analytics: {}, advertising: {}, necessary: {}},
+        //         settings: {consenttype: "explicit"}
+        //     });
+        //     cc.setLocation(lang1);
+        // }
+
+        var lang1 = "CN";
+        MC.getRegion() || (MC.setRegion(lang[lang1]), $("#region").val(MC.getRegion()));
+        cc.initialise({
+            cookies: {social: {}, analytics: {}, advertising: {}, necessary: {}},
+            settings: {consenttype: "explicit"}
+        });
+        cc.setLocation(lang1);
     }
 
     function D(b) {
@@ -28,29 +65,29 @@
 
     function E(a) {
         d.context = "google" == a ? "google" : "facebook";
-        v()
+        updateStorage()
     }
 
-    function v() {
+    function updateStorage() {
         a.localStorage[q] = JSON.stringify(d);
         d = JSON.parse(a.localStorage[q]);
         a.storageInfo = d;
-        "google" == d.context ? (c("#gPlusShare").show(), c("#fbShare").hide()) : (c("#gPlusShare").hide(), c("#fbShare").show())
+        "google" == d.context ? ($("#gPlusShare").show(), $("#fbShare").hide()) : ($("#gPlusShare").hide(), $("#fbShare").show())
     }
 
     function F(b) {
-        c("#helloContainer").attr("data-has-account-data");
+        $("#helloContainer").attr("data-has-account-data");
         "" != b.displayName && (b.name = b.displayName);
         if (null == b.name || void 0 == b.name) b.name = "";
         var e = b.name.lastIndexOf("_");
         -1 != e && (b.name = b.name.substring(0, e));
-        c("#helloContainer").attr("data-has-account-data", "1");
-        c("#helloContainer").attr("data-logged-in", "1");
-        c(".agario-profile-panel .progress-bar-star").text(b.level);
-        c(".agario-exp-bar .progress-bar-text").text(b.xp + "/" + b.xpNeeded + " XP");
-        c(".agario-exp-bar .progress-bar").css("width", (88 * b.xp / b.xpNeeded).toFixed(2) + "%");
-        c(".agario-profile-name").text(b.name);
-        "" != b.picture && c(".agario-profile-picture").attr("src", b.picture);
+        $("#helloContainer").attr("data-has-account-data", "1");
+        $("#helloContainer").attr("data-logged-in", "1");
+        $(".agario-profile-panel .progress-bar-star").text(b.level);
+        $(".agario-exp-bar .progress-bar-text").text(b.xp + "/" + b.xpNeeded + " XP");
+        $(".agario-exp-bar .progress-bar").css("width", (88 * b.xp / b.xpNeeded).toFixed(2) + "%");
+        $(".agario-profile-name").text(b.name);
+        "" != b.picture && $(".agario-profile-picture").attr("src", b.picture);
         d.userInfo.level = b.level;
         d.userInfo.xp = b.xp;
         d.userInfo.xpNeeded = b.xpNeeded;
@@ -62,18 +99,18 @@
     function r(b, e) {
         var k = b;
         if (d.userInfo.loggedIn) {
-            var h = c("#helloContainer").is(":visible") && "1" == c("#helloContainer").attr("data-has-account-data");
+            var h = $("#helloContainer").is(":visible") && "1" == $("#helloContainer").attr("data-has-account-data");
             k && k || (k = d.userInfo);
             if (h) {
-                var g = +c(".agario-exp-bar .progress-bar-text").first().text().split("/")[0], h = +c(".agario-exp-bar .progress-bar-text").first().text().split("/")[1].split(" ")[0], l = c(".agario-profile-panel .progress-bar-star").first().text();
+                var g = +$(".agario-exp-bar .progress-bar-text").first().text().split("/")[0], h = +$(".agario-exp-bar .progress-bar-text").first().text().split("/")[1].split(" ")[0], l = $(".agario-profile-panel .progress-bar-star").first().text();
                 if (l != k.level) r({xp: h, xpNeeded: h, level: l}, function () {
-                    c(".agario-profile-panel .progress-bar-star").text(k.level);
-                    c(".agario-exp-bar .progress-bar").css("width", "100%");
-                    c(".progress-bar-star").addClass("animated tada").one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function () {
-                        c(".progress-bar-star").removeClass("animated tada")
+                    $(".agario-profile-panel .progress-bar-star").text(k.level);
+                    $(".agario-exp-bar .progress-bar").css("width", "100%");
+                    $(".progress-bar-star").addClass("animated tada").one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function () {
+                        $(".progress-bar-star").removeClass("animated tada")
                     });
                     setTimeout(function () {
-                        c(".agario-exp-bar .progress-bar-text").text(k.xpNeeded + "/" + k.xpNeeded + " XP");
+                        $(".agario-exp-bar .progress-bar-text").text(k.xpNeeded + "/" + k.xpNeeded + " XP");
                         r({xp: 0, xpNeeded: k.xpNeeded, level: k.level}, function () {
                             r(k)
                         })
@@ -84,8 +121,8 @@
                         b = (Date.now() - f) / 1E3;
                         b = 0 > b ? 0 : 1 < b ? 1 : b;
                         b = b * b * (3 - 2 * b);
-                        c(".agario-exp-bar .progress-bar-text").text(~~(g + (k.xp - g) * b) + "/" + k.xpNeeded + " XP");
-                        c(".agario-exp-bar .progress-bar").css("width", (88 * (g + (k.xp - g) * b) / k.xpNeeded).toFixed(2) + "%");
+                        $(".agario-exp-bar .progress-bar-text").text(~~(g + (k.xp - g) * b) + "/" + k.xpNeeded + " XP");
+                        $(".agario-exp-bar .progress-bar").css("width", (88 * (g + (k.xp - g) * b) / k.xpNeeded).toFixed(2) + "%");
                         e && e();
                         1 > b && a.requestAnimationFrame(n)
                     };
@@ -115,16 +152,22 @@
             null == e || "undefined" == e || "" == e ? (3 > M && (M++, a.facebookRelogin()), a.logout()) : (a.fetchFacebookPermissions(), a.MC.doLoginWithFB(e), f.cache.login_info = [e, "facebook"], a.FB.api("/me/picture?width=180&height=180", function (e) {
                 d.userInfo.picture = e.data.url;
                 a.updateStorage();
-                c(".agario-profile-picture").attr("src", e.data.url);
+                $(".agario-profile-picture").attr("src", e.data.url);
                 d.userInfo.socialId = b.authResponse.userID;
                 w()
-            }), c("#helloContainer").attr("data-logged-in", "1"), d.context = "facebook", d.loginIntent = "1", a.updateStorage(), a.MC.showInstructionsPanel(!0))
+            }), $("#helloContainer").attr("data-logged-in", "1"), d.context = "facebook", d.loginIntent = "1", a.updateStorage(), a.MC.showInstructionsPanel(!0))
         }
     }
 
     var m = document.createElement("canvas");
-    if ("undefined" != typeof console && "undefined" != typeof DataView && "undefined" != typeof WebSocket && m && null != m.getContext && a.localStorage) {
-        var z = !1, x = {};
+    if ("undefined" != typeof console &&
+        "undefined" != typeof DataView &&
+        "undefined" != typeof WebSocket &&
+        m && null != m.getContext &&
+        a.localStorage
+    ) {
+        // 获取通过get url传入的参数
+        var z = false, x = {};
         (function () {
             var b = a.location.search;
             "?" == b.charAt(0) && (b = b.slice(1));
@@ -134,26 +177,43 @@
             }
         })();
         a.queryString = x;
-        var J = "fb" in x, m = "miniclip" in x, U = function () {
-            u("", -1)
-        }, N = "http:" != a.location.protocol, V = "1" == function (a) {
+
+        // 设置Cookie
+        var J = "fb" in x,
+            m = "miniclip" in x,
+            N = "http:" != a.location.protocol,
+            V = "1" == function (a) {
                 a += "=";
                 for (var b = document.cookie.split(";"), c = 0; c < b.length; c++) {
                     for (var d = b[c]; " " == d.charAt(0);)d = d.substring(1, d.length);
                     if (!d.indexOf(a))return d.substring(a.length, d.length)
                 }
-                return null
-            }("agario_redirect"), O = !1;
-        J || m || (N && !V ? (u("1", 1), a.location.href = "http:" + a.location.href.substring(a.location.protocol.length), O = !0) : u("", -1));
-        N || u("", -1);
-        O || setTimeout(U, 3E3);
+                return null;
+            }("agario_redirect");
+        J || m || (N && !V ?
+            (setCookie("1", 1),
+            a.location.href = "http:" + a.location.href.substring(a.location.protocol.length),
+            setTimeout(function () {setCookie("", -1)}, 3E3)) :
+            setCookie("", -1));
+        N || setCookie("", -1);
+
+        // 如果未初始化, 进行初始化
         if (!a.agarioNoInit) {
-            var S = a.location.protocol, m = a.navigator.userAgent;
-            if (-1 != m.indexOf("Android")) a.ga && a.ga("send", "event", "MobileRedirect", "PlayStore"), setTimeout(function () {
-                a.location.href = "https://play.google.com/store/apps/details?id=com.miniclip.agar.io"
-            }, 1E3); else if (-1 != m.indexOf("iPhone") || -1 != m.indexOf("iPad") || -1 != m.indexOf("iPod")) a.ga && a.ga("send", "event", "MobileRedirect", "AppStore"), setTimeout(function () {
-                a.location.href = "https://itunes.apple.com/app/agar.io/id995999703?mt=8&at=1l3vajp"
-            }, 1E3); else {
+            var protocol = a.location.protocol,
+                m = a.navigator.userAgent;
+
+            // 如果是安卓/苹果, 跳转到应用商店 => argo.pro 是跳转到 /mobile/ 下的手机版
+            if (-1 != m.indexOf("Android")) {
+                // a.ga && a.ga("send", "event", "MobileRedirect", "PlayStore"),
+                // setTimeout(function () {
+                //     a.location.href = "https://play.google.com/store/apps/details?id=com.miniclip.agar.io"
+                // }, 1E3);
+            } else if (-1 != m.indexOf("iPhone") || -1 != m.indexOf("iPad") || -1 != m.indexOf("iPod")) {
+                // a.ga && a.ga("send", "event", "MobileRedirect", "AppStore")
+                // (function () {
+                //     a.location.href = "https://itunes.apple.com/app/agar.io/id995999703?mt=8&at=1l3vajp"
+                // }, 1E3);
+            } else {
                 var f = {};
                 a.agarApp = f;
                 (new Image).src = "/img/split.png";
@@ -177,7 +237,7 @@
                     setInterval(MC.refreshRegionInfo, 18E4);
                     /firefox/i.test(navigator.userAgent) ? document.addEventListener("DOMMouseScroll", D, !1) : document.body.onmousewheel = D;
                     presetGameMode && MC.setGameMode(presetGameMode, !1);
-                    a.location.hash && 6 <= a.location.hash.length ? MC.joinParty(a.location.hash) : (R(), MC.checkRegion());
+                    a.location.hash && 6 <= a.location.hash.length ? MC.joinParty(a.location.hash) : (setRegion(), MC.checkRegion());
                     a.MC.setInGameState(!1)
                 };
                 var p = "";
@@ -206,8 +266,8 @@
                             case 27:
                                 b.preventDefault();
                                 MC.showNickDialog(300);
-                                c("#oferwallContainer").is(":visible") && a.closeOfferwall();
-                                c("#videoContainer").is(":visible") && a.closeVideoContainer();
+                                $("#oferwallContainer").is(":visible") && a.closeOfferwall();
+                                $("#videoContainer").is(":visible") && a.closeVideoContainer();
                                 break;
                             case 220:
                                 b.preventDefault(), MC.showStatsDialog()
@@ -227,13 +287,13 @@
                         (d = "debug" in a.queryString) && f.debug.showDebug()
                     };
                     b.bind = function (a, b) {
-                        c(e).bind(a, b)
+                        $(e).bind(a, b)
                     };
                     b.unbind = function (a, b) {
-                        c(e).unbind(a, b)
+                        $(e).unbind(a, b)
                     };
                     b.trigger = function (a, b) {
-                        c(e).trigger(a, b)
+                        $(e).trigger(a, b)
                     };
                     b.__defineGetter__("debug", function () {
                         return d
@@ -254,7 +314,7 @@
                 m = function (a) {
                     function b(a, b, e, d) {
                         a += "Canvas";
-                        var g = c("<canvas>", {id: a});
+                        var g = $("<canvas>", {id: a});
                         l.append(g);
                         e = new SmoothieChart(e);
                         for (g = 0; g < b.length; g++) {
@@ -283,7 +343,7 @@
                         lineWidth: 2
                     };
                     a.showDebug = function () {
-                        g || (l = c("#debug-overlay"), d("networkUpdate", {
+                        g || (l = $("#debug-overlay"), d("networkUpdate", {
                             name: "network updates",
                             minValue: 0,
                             maxValue: 240
@@ -319,7 +379,7 @@
                     return a
                 }({});
                 f.debug = m;
-                var t = {
+                var lang = {
                     AF: "JP-Tokyo",
                     AX: "EU-London",
                     AL: "EU-London",
@@ -612,7 +672,7 @@
                 a.createDefaultStorage = function () {
                     d = y
                 };
-                a.updateStorage = v;
+                a.updateStorage = updateStorage;
                 a.hasLoginIntent = function () {
                     return "1" == d.loginIntent
                 };
@@ -627,31 +687,31 @@
                     d = y;
                     delete a.localStorage[q];
                     a.localStorage[q] = JSON.stringify(y);
-                    v();
+                    updateStorage();
                     Q();
                     f.cache.sentGameServerLogin = !1;
                     delete f.cache.login_info;
-                    c("#helloContainer").attr("data-logged-in", "0");
-                    c("#helloContainer").attr("data-has-account-data", "0");
-                    c(".timer").text("");
-                    c("#gPlusShare").hide();
-                    c("#fbShare").show();
-                    c("#user-id-tag").text("");
-                    c(".shop-blocker").fadeOut(100);
+                    $("#helloContainer").attr("data-logged-in", "0");
+                    $("#helloContainer").attr("data-has-account-data", "0");
+                    $(".timer").text("");
+                    $("#gPlusShare").hide();
+                    $("#fbShare").show();
+                    $("#user-id-tag").text("");
+                    $(".shop-blocker").fadeOut(100);
                     MC.doLogout();
                     MC.reconnect()
                 };
                 a.animateAccountData = r;
                 a.toggleSocialLogin = function () {
-                    c("#socialLoginContainer").toggle();
-                    c("#settings").hide();
-                    c("#instructions").hide();
+                    $("#socialLoginContainer").toggle();
+                    $("#settings").hide();
+                    $("#instructions").hide();
                     MC.showInstructionsPanel()
                 };
                 a.toggleSettings = function () {
-                    c("#settings").toggle();
-                    c("#socialLoginContainer").hide();
-                    c("#instructions").hide();
+                    $("#settings").toggle();
+                    $("#socialLoginContainer").hide();
+                    $("#instructions").hide();
                     MC.showInstructionsPanel()
                 };
                 f.account = function (b) {
@@ -672,12 +732,12 @@
                         F(a)
                     };
                     b.setAccountData = function (a, b) {
-                        var e = c("#helloContainer").attr("data-has-account-data", "1");
+                        var e = $("#helloContainer").attr("data-has-account-data", "1");
                         d.userInfo.xp = a.xp;
                         d.userInfo.xpNeeded = a.xpNeeded;
                         d.userInfo.level = a.level;
-                        v();
-                        e && b ? r(a) : (c(".agario-profile-panel .progress-bar-star").text(a.level), c(".agario-exp-bar .progress-bar-text").text(a.xp + "/" + a.xpNeeded + " XP"), c(".agario-exp-bar .progress-bar").css("width", (88 * a.xp / a.xpNeeded).toFixed(2) + "%"))
+                        updateStorage();
+                        e && b ? r(a) : ($(".agario-profile-panel .progress-bar-star").text(a.level), $(".agario-exp-bar .progress-bar-text").text(a.xp + "/" + a.xpNeeded + " XP"), $(".agario-exp-bar .progress-bar").css("width", (88 * a.xp / a.xpNeeded).toFixed(2) + "%"))
                     };
                     b.v = function (a) {
                         r(a)
@@ -716,45 +776,46 @@
                     return !1
                 };
                 a.fbAsyncInit = function () {
-                    a.FB.init({appId: EnvConfig.fb_app_id, cookie: !0, xfbml: !0, status: !0, version: "v2.2"});
-                    I = !0;
-                    G();
-                    if (EnvConfig.env_staging || EnvConfig.env_production) {
-                        var b = document.createElement("script"), c = document.getElementsByTagName("script")[0];
-                        b.src = "https://renotifier.miniclippt.com/rntracking.js?app_id=" + EnvConfig.fb_app_id;
-                        c.parentNode.insertBefore(b, c)
-                    }
+                    // a.FB.init({appId: EnvConfig.fb_app_id, cookie: !0, xfbml: !0, status: !0, version: "v2.2"});
+                    // I = !0;
+                    // G();
+                    // if (EnvConfig.env_staging || EnvConfig.env_production) {
+                    //     var b = document.createElement("script"), c = document.getElementsByTagName("script")[0];
+                    //     b.src = "https://renotifier.miniclippt.com/rntracking.js?app_id=" + EnvConfig.fb_app_id;
+                    //     c.parentNode.insertBefore(b, c)
+                    // }
                 };
                 var C = !1;
                 (function (b) {
-                    function d() {
-                        var a = document.createElement("script");
-                        a.type = "text/javascript";
-                        a.async = !0;
-                        a.src = "//apis.google.com/js/client:platform.js?onload=gapiAsyncInit";
-                        var b = document.getElementsByTagName("script")[0];
-                        b.parentNode.insertBefore(a, b);
-                        h = !0
-                    }
+                    // function d() {
+                    //     var a = document.createElement("script");
+                    //     a.type = "text/javascript";
+                    //     a.async = !0;
+                    //     a.src = "//apis.google.com/js/client:platform.js?onload=gapiAsyncInit";
+                    //     var b = document.getElementsByTagName("script")[0];
+                    //     b.parentNode.insertBefore(a, b);
+                    //     h = !0
+                    // }
 
                     var f = {}, h = !1;
                     a.gapiAsyncInit = function () {
-                        c(f).trigger("initialized")
+                        // $(f).trigger("initialized")
                     };
                     b.google = {
                         h: function () {
-                            d()
-                        }, g: function (b, c) {
-                            a.gapi.client.load("plus", "v1", function () {
-                                gapi.client.plus.people.get({userId: "me"}).execute(function (a) {
-                                    c(a)
-                                })
-                            })
+                            // d()
+                        },
+                        g: function (b, c) {
+                            // a.gapi.client.load("plus", "v1", function () {
+                            //     gapi.client.plus.people.get({userId: "me"}).execute(function (a) {
+                            //         c(a)
+                            //     })
+                            // })
                         }
                     };
                     b.o = function (a) {
-                        h || d();
-                        "undefined" !== typeof gapi ? a() : c(f).bind("initialized", a)
+                        // h || d();
+                        // "undefined" !== typeof gapi ? a() : $(f).bind("initialized", a)
                     };
                     return b
                 })(f);
@@ -767,7 +828,7 @@
 
                     function k(a) {
                         d.userInfo.picture = a;
-                        c(".agario-profile-picture").attr("src", a)
+                        $(".agario-profile-picture").attr("src", a)
                     }
 
                     var h = !1, g = !1, l = null, m = {
@@ -844,8 +905,8 @@
                 };
                 a.logoutGooglePlus = Q;
                 a.getStatsString = function (b) {
-                    var d = c(".stats-time-alive").text();
-                    return a.parseString(b, "%@", [d.split(":")[0], d.split(":")[1], c(".stats-highest-mass").text()])
+                    var d = $(".stats-time-alive").text();
+                    return a.parseString(b, "%@", [d.split(":")[0], d.split(":")[1], $(".stats-highest-mass").text()])
                 };
                 a.twitterShareStats = function () {
                     a.open("https://twitter.com/intent/tweet?text=" +
@@ -874,15 +935,17 @@
                         calltoactionurl: EnvConfig.game_url
                     })
                 };
-                c(function () {
+                $(function () {
                     a.f();
                     "MAsyncInit" in a && a.MAsyncInit();
-                    c("[data-itr]").each(function () {
-                        var b = c(this), d = b.attr("data-itr");
+                    $("[data-itr]").each(function () {
+                        var b = $(this), d = b.attr("data-itr");
                         b.html(a.i18n(d))
                     })
                 })
             }
         }
-    } else alert("You browser does not support this game, we recommend you to use Firefox to play this")
+    } else {
+        alert("You browser does not support this game, we recommend you to use Firefox to play this");
+    }
 })(window, window.jQuery);
