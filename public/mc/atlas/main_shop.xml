@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:69bd407adb7be00bcc8ca171a7599af2:9975a419553645b5eddef38cc2f82cc5:5add28dfee4cda28600f2c8d13916e4d$ -->
+<TextureAtlas imagePath="main_shop.png">
+    <SubTexture name="Avatar" x="1144" y="243" width="50" height="50"/>
+    <SubTexture name="Close" x="1102" y="408" width="18" height="17" frameX="-1" frameY="-3" frameWidth="20" frameHeight="20"/>
+    <SubTexture name="Close_disabled" x="1443" y="280" width="15" height="14" frameX="-3" frameY="-3" frameWidth="20" frameHeight="20"/>
+    <SubTexture name="Election_Icon_Democratic" x="1460" y="399" width="81" height="83"/>
+    <SubTexture name="Election_Icon_Republican" x="1827" y="2" width="82" height="72"/>
+    <SubTexture name="Exp_Star" x="1460" y="280" width="124" height="117" frameX="-1" frameY="-4" frameWidth="125" frameHeight="125"/>
+    <SubTexture name="Google_Play" x="1543" y="409" width="108" height="47"/>
+    <SubTexture name="alert_icon" x="1318" y="301" width="140" height="129"/>
+    <SubTexture name="appstore" x="799" y="408" width="124" height="47"/>
+    <SubTexture name="arrow" x="1906" y="310" width="24" height="119"/>
+    <SubTexture name="back_button" x="1705" y="409" width="39" height="39"/>
+    <SubTexture name="check" x="799" y="457" width="21" height="21"/>
+    <SubTexture name="checkbox" x="1569" y="458" width="21" height="21"/>
+    <SubTexture name="coins_button" x="401" y="2" width="396" height="239"/>
+    <SubTexture name="currency_icon" x="1422" y="280" width="19" height="19"/>
+    <SubTexture name="dailyquest_chest" x="1750" y="310" width="154" height="119"/>
+    <SubTexture name="dailyquest_chest_icon" x="1592" y="458" width="17" height="14"/>
+    <SubTexture name="dailyquest_chestbudle" x="1528" y="2" width="297" height="149"/>
+    <SubTexture name="fast_play" x="1838" y="133" width="18" height="13"/>
+    <SubTexture name="fb_icon" x="1827" y="133" width="9" height="18"/>
+    <SubTexture name="freecoins_video" x="1067" y="408" width="33" height="37"/>
+    <SubTexture name="giant_coin" x="1760" y="153" width="160" height="155"/>
+    <SubTexture name="gift_big_icons" x="799" y="243" width="343" height="163"/>
+    <SubTexture name="gift_mini_icon" x="1911" y="27" width="13" height="16"/>
+    <SubTexture name="gifting_button" x="2" y="2" width="397" height="239"/>
+    <SubTexture name="gifts_icon" x="1197" y="148" width="223" height="151"/>
+    <SubTexture name="gplus_icon" x="925" y="436" width="21" height="13"/>
+    <SubTexture name="gplus_icon2" x="925" y="436" width="21" height="13"/>
+    <SubTexture name="hint" x="1543" y="458" width="24" height="24"/>
+    <SubTexture name="locket" x="1911" y="2" width="17" height="23"/>
+    <SubTexture name="mass_button" x="401" y="243" width="396" height="239"/>
+    <SubTexture name="massboost_2x_shop" x="1595" y="153" width="163" height="126"/>
+    <SubTexture name="massboost_3x_shop" x="1586" y="281" width="162" height="126"/>
+    <SubTexture name="multiplier_stamp" x="1827" y="76" width="70" height="55"/>
+    <SubTexture name="not_for_guests" x="1197" y="2" width="329" height="144"/>
+    <SubTexture name="play" x="1102" y="427" width="11" height="13"/>
+    <SubTexture name="progress_striped" x="925" y="408" width="140" height="26"/>
+    <SubTexture name="search_mini_icon" x="822" y="457" width="16" height="16"/>
+    <SubTexture name="skins_button" x="2" y="243" width="397" height="239"/>
+    <SubTexture name="sticker" x="1653" y="409" width="50" height="49"/>
+    <SubTexture name="survey_icon" x="1899" y="76" width="31" height="36"/>
+    <SubTexture name="twitter_icon" x="1899" y="114" width="21" height="17"/>
+    <SubTexture name="xp_button" x="799" y="2" width="396" height="239"/>
+    <SubTexture name="xpboost_2x_shop" x="1144" y="301" width="172" height="125"/>
+    <SubTexture name="xpboost_3x_shop" x="1422" y="153" width="171" height="125"/>
+</TextureAtlas>
